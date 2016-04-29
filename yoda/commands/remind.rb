@@ -4,7 +4,7 @@ class RemindHelpers
       "attachments": [
         {
           "fallback": "https://timesheet.carbonfive.com",
-          "title": "Enter your hours in Timesheet",
+          "title": "Go to Timesheet",
           "pretext": "<!channel>: #{self.random_reminder} :yoda:",
           "title_link": "https://timesheet.carbonfive.com",
           "mrkdwn_in": ["pretext"]
@@ -15,7 +15,7 @@ class RemindHelpers
 
   def self.random_reminder
     [
-      "The force is strong today. Hours you will enter.",
+      "Our force is strong today. Hours you will enter.",
       "Powerful you have become. Entered hours I sense from you."
     ].sample
   end
