@@ -33,7 +33,7 @@ module Yoda
         begin
           messages = []
           times.times do
-            message_options = YodaHelpers.generate_message(bombing).merge(channel: data.channel, is_user:true)
+            message_options = YodaHelpers.generate_message(bombing).merge(channel: data.channel, as_user:true)
             messages << client.web_client.chat_postMessage(message_options)
           end
 
