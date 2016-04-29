@@ -1,3 +1,23 @@
+class NagHelpers
+  def self.random_nag
+    [
+      "Days it has been since hours I requested. To Timesheet go. Yeesssssss?",
+      "Do or do not. There is no try.",
+      "Excuses matter not. Hours you shall enter.",
+      "Entered your hours must be, before banish these nags you can.",
+      "Missing hours you have. Ignore you shall not.",
+      "The dark path of not entering hours — consume you it will.",
+      "Without hours entered, in a dark place we find ourselves.",
+      "The fear of missing hours is a path to the Dark Side.",
+      "Hours? Found some you have?",
+      "No Timesheet you fill? Only pain you will find.",
+      "Ready are you? Enter hours you will.",
+      "Clear your mind will be, if enter hours you do.",
+      "Think I am fooling, do you? Hours you must."
+    ].sample
+  end
+end
+
 module Yoda
   module Commands
     class Nag < SlackRubyBot::Commands::Base
@@ -19,7 +39,7 @@ module Yoda
           else
             im.id
           end
-          client.say(channel: channel, text: "fill in your hours, you must")
+          client.say(channel: channel, text: "#{NagHelpers.random_nag}")
         end
       end
     end
