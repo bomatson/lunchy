@@ -4,9 +4,8 @@ class RemindHelpers
       "attachments": [
         {
           "fallback": "https://timesheet.carbonfive.com",
-          "color": "#36a64f",
           "title": "Enter your hours in Timesheet",
-          "pretext": "#{self.random_reminder}",
+          "pretext": "<!channel>: #{self.random_reminder} :yoda:",
           "title_link": "https://timesheet.carbonfive.com",
           "mrkdwn_in": ["pretext"]
         }
@@ -25,12 +24,18 @@ end
 module Yoda
   module Commands
     class Remind < SlackRubyBot::Commands::Base
-      command 'remind' do |client, data, _match|
-        channel_name = 'team-eight'
+      command 'remind' do |client, data, match|
+        arg = data.text.split(' ')[-1]
+        channel_name = if arg != 'remind'
+                         arg
+                       else
+                         'team-eight'
+                       end
+
         channels = client.channels.values + client.groups.values
         channel = channels.detect { |channel| channel.name == channel_name }
 
-        message_options = {channel: channel.id, is_user: true}.merge(RemindHelpers.reminder_attachment)
+        message_options = {channel: channel.id, as_user: true}.merge(RemindHelpers.reminder_attachment)
         client.web_client.chat_postMessage(message_options)
       end
     end
