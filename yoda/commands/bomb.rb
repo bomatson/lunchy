@@ -19,6 +19,8 @@ module Yoda
     MAX_TIMES = 500
     CLEANUP_DELAY = 10
     class Bomb < SlackRubyBot::Commands::Base
+
+
       match /^!(.*)bomb(\s+\d+)?/ do |client, data, _match|
         times = _match[2].to_i
         times = times == 0 ? DEFAULT_TIMES : times
@@ -31,19 +33,26 @@ module Yoda
                     _match[1]
                   end
         begin
-          messages = []
-          times.times do
-            message_options = YodaHelpers.generate_message(bombing).merge(channel: data.channel, as_user:true)
-            messages << client.web_client.chat_postMessage(message_options)
+          message_queue = Queue.new
+
+          producer = Thread.new do
+            times.times do
+              message_options = YodaHelpers.generate_message(bombing).merge(channel: data.channel, as_user:true)
+              message_queue << client.web_client.chat_postMessage(message_options)
+            end
           end
-          Thread.new do
+
+          consumer = Thread.new do
             sleep(CLEANUP_DELAY)
-            messages.each do |msg|
+            while message_queue.length > 0
+              msg = message_queue.pop
               client.web_client.chat_delete(channel: msg.channel, ts: msg.ts)
             end
             message = "Dat was da bomb! :bomb: \n Now get back to work :c5:"
             client.say(channel: data.channel, text: message)
           end
+          consumer.join
+
         rescue Exception => ex
           client.say(channel: data.channel, text: "You missed your target. Try again!")
           client.say(channel: data.channel, text: "/shrug")
