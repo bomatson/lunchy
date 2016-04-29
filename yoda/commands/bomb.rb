@@ -36,16 +36,17 @@ module Yoda
             message_options = YodaHelpers.generate_message(bombing).merge(channel: data.channel, as_user:true)
             messages << client.web_client.chat_postMessage(message_options)
           end
-
           Thread.new do
             sleep(CLEANUP_DELAY)
             messages.each do |msg|
               client.web_client.chat_delete(channel: msg.channel, ts: msg.ts)
             end
+            message = "Dat was da bomb! :bomb: \n Now get back to work :c5:"
+            client.say(channel: data.channel, text: message)
           end
         rescue Exception => ex
-
-          client.say(channel: data.channel, text: "#{ex} :bomb:")
+          client.say(channel: data.channel, text: "You missed your target. Try again!")
+          client.say(channel: data.channel, text: "/shrug")
         end
       end
     end
