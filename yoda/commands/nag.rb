@@ -38,7 +38,7 @@ module Yoda
           else
             im.id
           end
-          client.say(channel: channel, text: "#{NagHelpers.random_nag}")
+          client.say(channel: channel, text: "#{NagHelpers.random_nag} :yoda:")
         end
       end
     end
