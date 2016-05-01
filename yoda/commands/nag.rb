@@ -1,3 +1,4 @@
+# coding: utf-8
 class NagHelpers
   def self.random_nag
     [
@@ -21,24 +22,38 @@ end
 module Yoda
   module Commands
     class Nag < SlackRubyBot::Commands::Base
+
+      TEST_EMAILS = [
+        'sidney@carbonfive.com',
+        'jon@carbonfive.com',
+        'sueanna@carbonfive.com',
+        'ericf@carbonfive.com',
+        'suzanna@carbonfive.com',
+        'bobby@carbonfive.com'
+      ]
+
+      def self.send_direct_message(client, user, msg)
+        im = client.ims.values.detect { |i| i.user == user.id }
+        channel = if im == nil
+                    # start a new conversation with this user if necessary
+                    response = client.web_client.im_open user: user.id
+                    response.channel
+                  else
+                    im.id
+                  end
+        client.say(channel: channel, text: msg)
+      end
+
       command 'nag' do |client, data, _match|
-        test_emails = ['sidney@carbonfive.com', 'jon@carbonfive.com', 'sueanna@carbonfive.com', 'ericf@carbonfive.com', 'suzanna@carbonfive.com', 'bobby@carbonfive.com']
-        emails = ENV['FOR_REALZ'] ? Timesheet.status : test_emails
+        emails = ENV['FOR_REALZ'] ? Timesheet.status : TEST_EMAILS
         users = client.users.values.select { |user| emails.include? user.profile.email }
 
         names = users.map{ |user| user.profile.first_name }
 
-        client.say(channel: data.channel, text: "nagging these people about their hours: #{names.join(', ')}")
+        client.say(channel: data.channel, text: "I just nagged these people about their hours: #{names.join(', ')}")
 
         users.each do |user|
-          im = client.ims.values.detect { |i| i.user == user.id }
-          channel = if im == nil
-            response = client.web_client.im_open user: user.id
-            response.channel
-          else
-            im.id
-          end
-          client.say(channel: channel, text: "#{NagHelpers.random_nag} :yoda:")
+          send_direct_message(client, user, "#{NagHelpers.random_nag} :yoda:\nhttps://timesheet.carbonfive.com\n")
         end
       end
     end
