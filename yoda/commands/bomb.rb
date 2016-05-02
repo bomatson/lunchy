@@ -17,7 +17,7 @@ module Yoda
   module Commands
     DEFAULT_TIMES = 10
     MAX_TIMES = 500
-    CLEANUP_DELAY = 10
+    CLEANUP_DELAY = 20
     class Bomb < SlackRubyBot::Commands::Base
 
 
