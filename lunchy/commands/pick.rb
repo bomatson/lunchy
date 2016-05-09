@@ -6,7 +6,7 @@ module Lunchy
       command 'pick' do |client, data, _match|
         redis = Redis.new
         channel_name = data.channel
-        decision = redis.lpop channel_name
+        decision = redis.spop channel_name
 
         if decision
           client.say(channel: data.channel, text: "Time to eat! You are going to #{decision} :)")
