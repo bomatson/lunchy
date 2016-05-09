@@ -3,6 +3,7 @@ ruby '2.3.0'
 gem 'slack-ruby-bot'
 gem 'httparty'
 gem 'rack'
+gem 'redis'
 
 group :test do
   gem 'rspec'
