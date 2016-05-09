@@ -5,13 +5,14 @@ module Lunchy
     class Add < SlackRubyBot::Commands::Base
       command 'add' do |client, data, _match|
         redis = Redis.new
-        lunch_spot = data.text.split(/\s+/)[1..-1].join(' ')
+        lunch_spot = data.text.split(/\s+/)[2..-1].join(' ')
+        channel_name = data.channel
 
         unless lunch_spot.empty?
-          redis.lpush('lunch', lunch_spot)
-          client.say(channel: data.channel, text: "Great! I've added #{lunch_spot} to the list")
+          redis.lpush(channel_name, lunch_spot)
+          client.say(channel: channel_name, text: "Great! I've added #{lunch_spot} to the list")
         else
-          client.say(channel: data.channel, text: "Whoops! You need to include a restaurant name, silly")
+          client.say(channel: channel_name, text: "Whoops! You need to include a restaurant name, silly")
         end
       end
     end
