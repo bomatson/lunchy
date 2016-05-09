@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Yoda::Bot do
-  subject { Yoda::Bot.instance }
+describe Lunchy::Bot do
+  subject { Lunchy::Bot.instance }
 
   it_behaves_like 'a slack ruby bot'
 end

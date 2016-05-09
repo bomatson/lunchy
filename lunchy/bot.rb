@@ -1,4 +1,4 @@
-module Yoda
+module Lunchy
   class Bot < SlackRubyBot::Bot
   end
 end

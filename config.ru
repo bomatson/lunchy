@@ -1,3 +1,3 @@
-require './yoda.rb'
+require './lunchy.rb'
 
-Yoda::Bot.run
+Lunchy::Bot.run

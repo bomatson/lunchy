@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Yoda::Commands::Help do
+describe Lunchy::Commands::Help do
   def app
-    Yoda::Bot.instance
+    Lunchy::Bot.instance
   end
 
   it 'help' do
